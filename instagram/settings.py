@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['https://last-doohong91.c9users.io']
 # Application definition
 
 INSTALLED_APPS = [
+    'dango_extensions',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
