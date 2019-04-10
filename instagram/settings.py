@@ -25,7 +25,7 @@ SECRET_KEY = '5ttdnsg&aw-@-wghkqt6fa10^*jlzth$8msm%_4+xas!91l39_'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['https://last-doohong91.c9users.io']
+ALLOWED_HOSTS = ['last-doohong91.c9users.io']
 
 
 # Application definition
