@@ -1,5 +1,5 @@
 from django import forms
-from .models import Post
+from .models import Post, Comment
 
 class PostModelForm(forms.ModelForm):
     content = forms.CharField(
@@ -15,3 +15,10 @@ class PostModelForm(forms.ModelForm):
         model = Post
         # input을 만들 column을 list로 만들어 넣어줌.
         fields = ['content', 'image']
+    
+    
+class CommentForm(forms.ModelForm):
+    
+    class Meta:
+        model = Comment
+        fields = ['content']

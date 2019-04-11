@@ -17,6 +17,18 @@
             <a class='btn btn-success' href="{% url 'posts:update' post.id %}">수정</a>
             <a class='btn btn-danger' href="{% url 'posts:delete' post.id %}">삭제</a>
           {% endif %}
+          {% if post.comment_set %}
+            <ul class="list-group">
+              {% for comment in post.comment_set.all %}
+                <li class="list-group-item">{{ comment.user }} | {{ comment.content }}</li>
+              {% endfor %}
+            </ul>
+          {% endif %}
+          <form method="post" action="{% url 'posts:create_comments' post.id %}">
+            {% csrf_token %}
+            {% bootstrap_form comment_form %}
+            <button type=submit class="btn btn-secondary">작성</button>
+          </form>
         </div>
       </div>
     </div>
