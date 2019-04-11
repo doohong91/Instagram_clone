@@ -14,4 +14,4 @@ class PostModelForm(forms.ModelForm):
     class Meta:
         model = Post
         # input을 만들 column을 list로 만들어 넣어줌.
-        fields = ['content',]
+        fields = ['content', 'image']
