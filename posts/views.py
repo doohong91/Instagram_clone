@@ -39,12 +39,13 @@ def delete(request, post_id):
 
 def update(request, post_id):
     post = get_object_or_404(Post, id=post_id)
-    form = PostModelForm(request.POST, instance=post)
     if request.method == 'POST':
+        form = PostModelForm(request.POST, instance=post)
         if form.is_valid():
             form.save()
             return redirect('posts:list')
     else:
+        form = PostModelForm(instance=post)
         context = {
             'form':form
         }
