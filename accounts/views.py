@@ -11,7 +11,7 @@ def signup(request):
         if form.is_valid():
             user = form.save()
             auth_login(request, user)
-            return redirect('root')
+        return redirect('root')
     else:
         form = UserCreationForm()
         return render(request, 'accounts/signup.html', {'form': form})
@@ -22,7 +22,7 @@ def login(request):
         form = AuthenticationForm(request, request.POST)
         if form.is_valid():
             auth_login(request, form.get_user())
-            return redirect('root')
+        return redirect('root')
     else:
         form = AuthenticationForm()
     return render(request, 'accounts/login.html', {'form': form})
@@ -40,3 +40,11 @@ def profile(request, username):
     # 3. from django.contrib.auth import get_user_model 
     profile = get_object_or_404(get_user_model(), username=username)
     return render(request, 'accounts/profile.html', {'profile': profile})
+
+
+def delete(request):
+    if request.method == 'POST':
+        request.user.delete()
+        return redirect('root')
+    else:
+        return render(request, 'accounts/delete.html')
