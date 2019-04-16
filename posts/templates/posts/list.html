@@ -12,6 +12,18 @@
         </div>
         <img src="{{ post.image.url }}" class="card-img-top" alt="random_image">
         <div class="card-body">
+          <a href="{% url 'posts:like' post.id %}">
+            {% if request.user in post.like_users.all %}
+            <i class="fas fa-heart"></i>
+            {% else %}
+            <i class="far fa-heart"></i>
+            {% endif %}
+          </a>
+          <p class="card-text">
+            {{ post.like_users.count }}명이 좋아합니다.
+          </p>
+        </div>
+        <div class="card-body">
           <p class="card-text">{{ post.content }}</p>
           {% if request.user == post.user %}
             <a class='btn btn-success' href="{% url 'posts:update' post.id %}">수정</a>
