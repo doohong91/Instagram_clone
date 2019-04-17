@@ -1,19 +1,21 @@
 from django.shortcuts import render, redirect, get_object_or_404
-from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
+from django.contrib.auth.forms import AuthenticationForm
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth import get_user_model
+from django.contrib.auth.decorators import login_required
+from .forms import CustomUserCreationForm
 
 # Create your views here.
 def signup(request):
     if request.method == 'POST':
-        form = UserCreationForm(request.POST)
+        form = CustomUserCreationForm(request.POST)
         if form.is_valid():
             user = form.save()
             auth_login(request, user)
         return redirect('root')
     else:
-        form = UserCreationForm()
+        form = CustomUserCreationForm()
         return render(request, 'accounts/signup.html', {'form': form})
 
 
@@ -48,3 +50,13 @@ def delete(request):
         return redirect('root')
     else:
         return render(request, 'accounts/delete.html')
+
+
+@login_required
+def follow(request, user_id):
+    person = get_object_or_404(get_user_model(), id=user_id)
+    if request.user in person.followers.all():
+        person.followers.remove(request.user)
+    else:
+        person.followers.add(request.user)
+    return redirect('profile', person.username)

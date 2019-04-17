@@ -1,9 +1,11 @@
 from django.shortcuts import render, redirect, get_object_or_404
 from .forms import PostModelForm, CommentForm
 from .models import Post, Comment
+from django.contrib.auth.decorators import login_required
 
 
 # Create your views here.
+@login_required
 def create(request):
     # 'POST'요청이 오면,
     if request.method == 'POST':
@@ -24,8 +26,9 @@ def create(request):
         return render(request, 'posts/create.html', context)
 
 
+@login_required
 def list(request):
-    posts = Post.objects.all()
+    posts = Post.objects.filter(user__in=request.user.followings.values('id')).order_by('-pk')
     comment_form = CommentForm()
     context = {
         'posts': posts,
@@ -34,6 +37,7 @@ def list(request):
     return render(request, 'posts/list.html', context)
     
 
+@login_required
 def delete(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     if post.user != request.user:
@@ -42,6 +46,7 @@ def delete(request, post_id):
     return redirect('posts:list')
 
 
+@login_required
 def update(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     if post.user != request.user:
@@ -59,6 +64,7 @@ def update(request, post_id):
         return render(request, 'posts/update.html', context)
 
 
+@login_required
 def create_comments(request, post_id):
     comment_form = CommentForm(request.POST)
     if comment_form.is_valid():
@@ -68,7 +74,8 @@ def create_comments(request, post_id):
         comment.save()
         return redirect('posts:list')
         
-    
+ 
+@login_required  
 def like(request, post_id):
     post = get_object_or_404(Post, id=post_id)
     # 특정 유저가 특정 포스트를 좋아요 할때
